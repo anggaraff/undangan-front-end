@@ -1,5 +1,7 @@
 @import url("common.css");
 @import url("animation.css");
+/* @import url('https://fonts.cdnfonts.com/css/royal-wedding'); */
+@import url('https://fonts.cdnfonts.com/css/geraldine-personal-use');
 
 html {
     scrollbar-width: none !important;
@@ -11,8 +13,11 @@ html {
     -ms-overflow-style: auto !important;
 }
 
+.font-esthetic-2 {
+    font-family: 'Sacramento', cursive !important; 
+}
 .font-esthetic {
-    font-family: 'Sacramento', cursive !important;
+    font-family: 'GERALDINE PERSONAL USE', sans-serif !important;
 }
 
 .font-arabic {
