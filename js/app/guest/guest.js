@@ -337,17 +337,26 @@ export const guest = (() => {
         const params = new URLSearchParams(window.location.search);
 
         window.addEventListener('resize', util.debounce(slide));
-        document.addEventListener('undangan.progress.done', () => booting());
+        document.addEventListener('undangan.progress.done', () => {
+            booting().catch((err) => console.error('Error in booting:', err));
+        });
         document.addEventListener('hide.bs.modal', () => document.activeElement?.blur());
         document.getElementById('button-modal-download').addEventListener('click', (e) => {
-            img.download(e.currentTarget.getAttribute('data-src'));
+            try {
+                img.download(e.currentTarget.getAttribute('data-src'));
+            } catch (err) {
+                console.error('Error downloading image:', err);
+            }
         });
 
         if (!token || token.length <= 0) {
-            img.load();
-            aud.load();
-            cfi.load(document.body.getAttribute('data-confetti') === 'true');
-
+            try {
+                img.load();
+                aud.load();
+                cfi.load(document.body.getAttribute('data-confetti') === 'true');
+            } catch (err) {
+                console.error('Error loading assets:', err);
+            }
             document.getElementById('comment')?.remove();
             document.querySelector('a.nav-link[href="#comment"]')?.closest('li.nav-item')?.remove();
         }
@@ -360,7 +369,11 @@ export const guest = (() => {
 
             // if don't have data-src.
             if (!img.hasDataSrc()) {
-                img.load();
+                try {
+                    img.load();
+                } catch (err) {
+                    console.error('Error loading images:', err);
+                }
             }
 
             // fetch after document is loaded.
@@ -368,12 +381,20 @@ export const guest = (() => {
                 progress.complete('config');
 
                 if (img.hasDataSrc()) {
-                    img.load();
+                    try {
+                        img.load();
+                    } catch (err) {
+                        console.error('Error loading images:', err);
+                    }
                 }
 
-                aud.load();
-                comment.init();
-                cfi.load(data.is_confetti_animation);
+                try {
+                    aud.load();
+                    comment.init();
+                    cfi.load(data.is_confetti_animation);
+                } catch (err) {
+                    console.error('Error loading audio/comment/confetti:', err);
+                }
 
                 comment.show()
                     .then(() => progress.complete('comment'))
